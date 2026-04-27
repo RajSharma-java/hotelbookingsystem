@@ -15,11 +15,26 @@ public interface RoomRepo extends JpaRepository<Room,Long> {
     List<String>findDistinctByRoomTypes();
 
 
-    @Query("SELECT r FROM Room r WHERE r.roomType LIKE %:roomTypes% AND r.id NOT IN (SELECT bk.room FROM Booking  bk WHERE " +
-            "(bk.checkInDate <= :checkInDate) AND (bk.checkOutDate >= :checkOutDate))")
-    List<Room>findAvailableRoomByDatesAndTypes(LocalDate checkInDate, LocalDate checkOutDate, String roomTypes);
+    @Query("""
+            SELECT r FROM Room r 
+            WHERE r.roomType LIKE %:roomTypes%
+            AND r.id NOT IN (
+                SELECT bk.room.id FROM Booking bk 
+                WHERE (bk.checkInDate <= :checkOutDate) 
+                AND (bk.checkOutDate >= :checkInDate)
+            )
+            """)
+    List<Room> findAvailableRoomByDatesAndTypes(
+            LocalDate checkInDate,
+            LocalDate checkOutDate,
+            String roomTypes
+    );
 
 
-    @Query("SELECT r FROM Room r WHERE r.id NOT IN(SELECT b.room FROM Booking b)")
+    @Query("""
+    SELECT r FROM Room r
+    LEFT JOIN Booking b ON b.room = r
+    WHERE b.id IS NULL
+""")
     List<Room>findAllAvailableRoom();
 }
