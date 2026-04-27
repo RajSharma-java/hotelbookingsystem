@@ -27,19 +27,18 @@ public class SecurityConfig {
 
     @Autowired
     private JWtAuthFilter jwtAuthenticationFilter;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers(HttpMethod.GET, "/").permitAll();
+                    auth.requestMatchers("/auth/**","/rooms/**","/bookings/**").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .formLogin(form -> form.disable())
                 .httpBasic(Customizer.withDefaults());
-
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
         return http.build();
     }
 
@@ -47,6 +46,7 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
+
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
