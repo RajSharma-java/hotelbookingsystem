@@ -40,7 +40,7 @@ public class User implements UserDetails {
 
     @NotBlank(message = "Password should be required!!")
     private String password;
-    private String role;
+    private String role="ROLE_USER";
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Booking> booking=new ArrayList<>();

@@ -33,12 +33,16 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/auth/**","/rooms/**","/bookings/**").permitAll();
-                    auth.anyRequest().authenticated();
+                    auth.requestMatchers(HttpMethod.POST, "/api/users/register").permitAll(); // open registration
+                    auth.requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll(); // open registration
+                    auth.anyRequest().authenticated(); // everything else requires login
                 })
                 .formLogin(form -> form.disable())
                 .httpBasic(Customizer.withDefaults());
+
+        //  Add this line to register your JWT filter before UsernamePasswordAuthenticationFilter
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 

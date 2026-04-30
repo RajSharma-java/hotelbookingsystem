@@ -30,7 +30,7 @@ public class UserDto {
 
     @NotBlank(message = "Password should be required!!")
     private String password;
-    private String role;
+    private String role="ROLE_USER";
     private List<BookingDto> booking=new ArrayList<>();
 
 }

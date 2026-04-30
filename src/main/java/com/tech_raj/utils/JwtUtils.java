@@ -3,6 +3,7 @@ package com.tech_raj.utils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,7 +22,11 @@ public class JwtUtils {
 
     private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 7; // 7 days
 
-    private String secretKey = "MySuperSecretKey1234567890MySuperSecretKey";
+    private final SecretKey secretKey = Keys.hmacShaKeyFor(
+            "MySuperSecretKey1234567890MySuperSecretKey1234567890"
+                    .getBytes()
+    );
+
 
     // generate Jwt Token
     public String generateToken(UserDetails userDetails){
