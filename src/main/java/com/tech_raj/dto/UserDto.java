@@ -1,5 +1,6 @@
 package com.tech_raj.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.tech_raj.entity.Booking;
 import jakarta.validation.constraints.NotBlank;
@@ -28,6 +29,7 @@ public class UserDto {
     @NotBlank(message = "Phone Number should be required!!")
     private String phoneNumber;
 
+    @JsonIgnore
     @NotBlank(message = "Password should be required!!")
     private String password;
     private String role="ROLE_USER";

@@ -21,6 +21,7 @@ import java.util.function.Function;
 public class JwtUtils {
 
     private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 7; // 7 days
+//    private static final long EXPIRATION_TIME = 1000 * 60 * 1; //1 minute
 
     private final SecretKey secretKey = Keys.hmacShaKeyFor(
             "MySuperSecretKey1234567890MySuperSecretKey1234567890"
@@ -29,9 +30,10 @@ public class JwtUtils {
 
 
     // generate Jwt Token
-    public String generateToken(UserDetails userDetails){
+    public String generateToken(UserDetails userDetails,Long userId){
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
+                .claim("userId",userId)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS256, secretKey)
@@ -40,6 +42,12 @@ public class JwtUtils {
 
     public String extractUsername(String token){
         return extractClaims(token, Claims::getSubject);
+    }
+    public Claims extractAllClaims(String token) {
+        return Jwts.parser()
+                .setSigningKey(secretKey)
+                .parseClaimsJws(token)
+                .getBody();
     }
 
     private <T> T extractClaims(String token, Function<Claims, T> function){

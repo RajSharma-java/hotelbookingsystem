@@ -1,7 +1,8 @@
 package com.tech_raj.controller;
 
 import com.tech_raj.dto.LoginRequest;
-import com.tech_raj.dto.LoginResponse;
+import com.tech_raj.response.ApiResponse;
+import com.tech_raj.response.LoginResponse;
 import com.tech_raj.service.interfac.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +19,9 @@ public class AuthController {
     private final UserService service;
 
     @PostMapping("login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest){
+    public ResponseEntity<ApiResponse<LoginResponse>> login(@RequestBody LoginRequest loginRequest){
         final LoginResponse loginResponse = service.loginUser(loginRequest);
-        return  ResponseEntity.ok(loginResponse);
+        ApiResponse response= new ApiResponse("Login successfully",1,loginResponse);
+        return  ResponseEntity.ok(response);
     }
 }

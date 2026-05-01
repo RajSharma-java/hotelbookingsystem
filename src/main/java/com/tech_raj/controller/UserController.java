@@ -1,15 +1,14 @@
 package com.tech_raj.controller;
 
-import com.tech_raj.dto.SignUpResponse;
+import com.tech_raj.response.PagedResponse;
+import com.tech_raj.response.SignUpResponse;
 import com.tech_raj.dto.UserDto;
 import com.tech_raj.service.interfac.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/users/")
@@ -20,9 +19,20 @@ public class UserController {
 
     // register user
     @PostMapping("register")
-    public ResponseEntity<SignUpResponse> registerUser(@RequestBody UserDto userDto){
+    public ResponseEntity<SignUpResponse> registerUser(@Valid @RequestBody UserDto userDto){
         final SignUpResponse userDto1 = userService.userRegistration(userDto);
         return new ResponseEntity<>(userDto1, HttpStatus.CREATED);
+    }
+
+    @GetMapping("getAllUserWithPagination")
+    public ResponseEntity<PagedResponse<UserDto>> getAllUsers(
+            @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+            @RequestParam(value = "pageSize", defaultValue ="10", required = false) int pageSize,
+            @RequestParam(value= "sorBy", defaultValue = "id", required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = "desc", required = false) String sortDir
+    ){
+         PagedResponse<UserDto> allUser = userService.getAllUser(pageNo, pageSize, sortBy, sortDir);
+         return ResponseEntity.ok(allUser);
     }
 
 }
