@@ -1,5 +1,6 @@
 package com.tech_raj.controller;
 
+import com.tech_raj.response.ApiResponse;
 import com.tech_raj.response.PagedResponse;
 import com.tech_raj.response.SignUpResponse;
 import com.tech_raj.dto.UserDto;
@@ -35,4 +36,10 @@ public class UserController {
          return ResponseEntity.ok(allUser);
     }
 
+    @GetMapping("getUserById/{id}")
+    public ResponseEntity<ApiResponse<UserDto>> getUserById(@PathVariable Long id){
+        final UserDto user = userService.getUserById(id);
+        ApiResponse response= new ApiResponse("User fetch successfully", 1, user);
+        return ResponseEntity.ok(response);
+    }
 }

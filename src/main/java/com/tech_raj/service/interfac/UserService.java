@@ -13,7 +13,7 @@ public interface UserService {
 
      PagedResponse<UserDto> getAllUser(int pageNo, int pageSize, String sortBy, String sortDir);
 
-     UserDto getUserByDto(Long id);
+     UserDto getUserById(Long id);
 
      UserDto updateUser(Long id, UserDto dto);
 
