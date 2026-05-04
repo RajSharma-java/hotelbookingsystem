@@ -1,9 +1,13 @@
 package com.tech_raj.repo;
 
+import com.tech_raj.dto.RoomDto;
 import com.tech_raj.entity.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -37,4 +41,15 @@ public interface RoomRepo extends JpaRepository<Room,Long> {
     WHERE b.id IS NULL
 """)
     List<Room>findAllAvailableRoom();
+
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM Room r WHERE r.roomNo = :roomNo")
+    void deleteRoomByRoomNo(@Param("roomNo") Integer roomNo);
+
+    @Query("SELECT a.roomNo FROM Room a WHERE a.roomNo = :roomNo")
+    Integer findRoomNo(@Param("roomNo") Integer roomNo);
+
+
 }

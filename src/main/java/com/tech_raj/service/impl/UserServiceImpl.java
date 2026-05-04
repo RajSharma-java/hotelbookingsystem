@@ -50,8 +50,8 @@ public class UserServiceImpl implements UserService {
          User users = mapper.map(dto, User.class);
          users.setPassword(passwordEncoder.encode(dto.getPassword()));
          User save = userRepo.save(users);
-         String token = jwtUtils.generateToken(save,user.get().getId());
-         SignUpResponse response= new SignUpResponse();
+        String token = jwtUtils.generateToken(save, save.getId());
+        SignUpResponse response= new SignUpResponse();
          response.setStatus("Success");
          response.setMsg("User Registration successfully!!");
          response.setToken(token);
@@ -115,11 +115,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto updateUser(Long id, UserDto dto) {
-        return null;
+         User user = userRepo.findById(id).orElseThrow(() -> new UserNotFoundException("User not found check again"));
+         if (dto.getName()!=null)  user.setName(dto.getName());
+         if(dto.getPhoneNumber()!=null) user.setPhoneNumber(dto.getPhoneNumber());
+        final User save = userRepo.save(user);
+        UserDto dto1 = mapper.map(save, UserDto.class);
+        return dto1;
     }
 
     @Override
     public String deleteUser(Long id) {
-        return "";
+        User user = userRepo.findById(id).orElseThrow(() -> new UserNotFoundException("User not found check again"));
+        userRepo.delete(user);
+        return "User deleted!!";
     }
 }

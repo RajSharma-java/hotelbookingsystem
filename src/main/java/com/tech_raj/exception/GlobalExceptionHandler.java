@@ -41,4 +41,24 @@ public class GlobalExceptionHandler {
         );
         return new ResponseEntity<>(response,HttpStatus.UNAUTHORIZED);
     }
+
+    @ExceptionHandler(RoomAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleRoomAlreadyExistsFoundException(RoomAlreadyExistsException ex){
+        ErrorResponse response= new ErrorResponse(
+                ex.getMessage(),
+                HttpStatus.BAD_REQUEST.value(),
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(RoomNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleRoomNotFoundException(RoomNotFoundException ex){
+        ErrorResponse response= new ErrorResponse(
+                ex.getMessage(),
+                HttpStatus.BAD_REQUEST.value(),
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
+    }
 }

@@ -42,4 +42,18 @@ public class UserController {
         ApiResponse response= new ApiResponse("User fetch successfully", 1, user);
         return ResponseEntity.ok(response);
     }
+
+    @PutMapping("updateUser/{id}")
+    public ResponseEntity<ApiResponse<UserDto>> updateUser(@PathVariable Long id, @RequestBody UserDto userDto){
+        final UserDto dto = userService.updateUser(id, userDto);
+        ApiResponse response= new ApiResponse("User data update successfully",1, dto);
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<ApiResponse> deleteUserById(@PathVariable Long id){
+        userService.deleteUser(id);
+        ApiResponse response= new ApiResponse("User Deleted successfully!!",1,null);
+        return ResponseEntity.ok(response);
+    }
 }

@@ -28,19 +28,11 @@ public class Room {
     private BigDecimal roomPrice;
 
     private String photoUrl;
+    private Integer roomNo;
 
     private String description;
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Booking> bookings;
 
-    @Override
-    public String toString() {
-        return "Room{" +
-                "id=" + id +
-                ", roomType='" + roomType + '\'' +
-                ", roomPrice=" + roomPrice +
-                ", photoUrl='" + photoUrl + '\'' +
-                ", description='" + description + '\'' +
-                '}';
-    }
+
 }

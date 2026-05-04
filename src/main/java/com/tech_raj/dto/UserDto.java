@@ -29,7 +29,6 @@ public class UserDto {
     @NotBlank(message = "Phone Number should be required!!")
     private String phoneNumber;
 
-    @JsonIgnore
     @NotBlank(message = "Password should be required!!")
     private String password;
     private String role="ROLE_USER";

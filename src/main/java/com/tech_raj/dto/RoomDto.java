@@ -22,6 +22,8 @@ public class RoomDto {
     @NotBlank(message = "Room type should be required!!")
     private String roomType;
 
+    private Integer roomNo;
+
     private BigDecimal roomPrice;
 
     private String photoUrl;
