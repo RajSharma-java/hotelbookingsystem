@@ -6,10 +6,7 @@ import com.tech_raj.service.interfac.RoomService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/rooms/")
@@ -17,6 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class RoomController {
     private final RoomService roomService;
 
+    @PostMapping("register")
     public ResponseEntity<ApiResponse<RoomDto>> registerRoom(@Valid @RequestBody RoomDto roomDto){
         final RoomDto roomDto1 = roomService.registerRoom(roomDto);
         ApiResponse response= new ApiResponse(
@@ -26,4 +24,5 @@ public class RoomController {
         );
         return ResponseEntity.ok(response);
     }
+
 }

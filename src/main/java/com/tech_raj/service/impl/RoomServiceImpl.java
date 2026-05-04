@@ -17,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,7 +30,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public RoomDto registerRoom(RoomDto roomDto) {
         final Integer roomNo = roomRepo.findRoomNo(roomDto.getRoomNo());
-        if(roomNo!=0){
+        if(Objects.equals(roomNo, roomDto.getRoomNo())){
             throw new RoomAlreadyExistsException("Room No already exists, Please check the roomNo");
         }
         final Room room = mapper.map(roomDto, Room.class);
@@ -57,8 +58,8 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public RoomDto getRoomById(Long id) {
-        roomRepo.findById(id).orElseThrow(()-> new RoomNotFoundException("Room Not found check id again!!"));
-        return null;
+        final Room room = roomRepo.findById(id).orElseThrow(() -> new RoomNotFoundException("Room Not found check id again!!"));
+         return mapper.map(room,RoomDto.class);
     }
 
     @Override
